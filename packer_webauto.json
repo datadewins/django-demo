@@ -1,0 +1,43 @@
+{
+    "variables": {
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "region":         "ap-south-1"
+    },
+    "builders": [
+        {
+            "access_key": "{{user `aws_access_key`}}",
+            "ami_name": "webauto-{{timestamp}}",
+            "instance_type": "t2.micro",
+            "region": "{{user `region`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "source_ami_filter": {
+              "filters": {
+              "virtualization-type": "hvm",
+              "name": "*debian-10-amd64-*",
+              "root-device-type": "ebs"
+              },
+              "owners": ["136693071363"],
+              "most_recent": true
+            },
+            "ssh_username": "admin",
+            "type": "amazon-ebs"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "./install.sh"
+        }
+    ],
+	"post-processors": [
+    [
+      {
+        "output": "manifest.json",
+        "strip_path": true,
+        "type": "manifest"
+      }
+    ]
+  ]
+}
+
