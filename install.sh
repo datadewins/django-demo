@@ -8,7 +8,6 @@ sudo apt-get install -y \
 		python3 \
 		python3-pip \
 		tmux
-#sudo apt -t buster-backports install tmux -y
 sudo pip3 install django
 
 # install apache and module
@@ -18,9 +17,10 @@ sudo a2enmod wsgi
 
 # configure service and host
 # get the application code
-git clone https://github.com/datadewins/djando-demo.git
-sudo cp -r djando-demo/dynamic /var/www/html
+git clone https://github.com/datadewins/django-demo.git
+sudo cp -r django-demo/dynamic /var/www/html
 sudo chown www-data /var/www/html/dynamic -R
+
 # setup host definition
 echo '
 WSGIScriptAlias / /var/www/html/dynamic/dynamic/wsgi.py
@@ -35,7 +35,7 @@ WSGIPythonPath /var/www/html/dynamic/
 	   </Files>
 	</Directory>
 </VirtualHost>
-' > sudo tee -a /etc/apache2/sites-enabled/000-default.conf
+' | sudo tee /etc/apache2/sites-enabled/000-default.conf
 
 # validate and start apache
 sudo apache2ctl configtest
